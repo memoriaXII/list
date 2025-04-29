@@ -6,47 +6,29 @@ import * as cloudinary from "cloudinary";
 
 const BASE_DIR = "https://cdn.sushi.com/image/upload";
 
-const NETWORK_TO_CHAIN_ID: Record<string, ChainId | 8453 | 1116 | 11235 | 59144 | 324 | 534352 | 314 | 7000 | 81457 | 2046399126 | 30 | 25> = {
-  arbitrum: ChainId.ARBITRUM,
-  "arbitrum-nova": ChainId.ARBITRUM_NOVA,
-  avalanche: ChainId.AVALANCHE,
-  base: 8453, // ChainId.BASE,
-  binance: ChainId.BSC,
-  boba: ChainId.BOBA,
-  "boba-avax": ChainId.BOBA_AVAX,
-  bsc: ChainId.BSC,
-  bttc: ChainId.BTTC,
-  celo: ChainId.CELO,
-  core: 1116, // ChainId.CORE,
-  ethereum: ChainId.ETHEREUM,
-  fantom: ChainId.FANTOM,
-  fuji: 108,
-  fuse: ChainId.FUSE,
-  gnosis: ChainId.GNOSIS,
-  haqq: 11235, // ChainId.HAQQ,
-  harmony: ChainId.HARMONY,
-  heco: ChainId.HECO,
-  kava: ChainId.KAVA,
-  linea: 59144, // ChainId.LINEA,
-  matic: ChainId.POLYGON,
-  metis: ChainId.METIS,
-  moonriver: ChainId.MOONRIVER,
-  okex: ChainId.OKEX,
-  optimism: ChainId.OPTIMISM,
-  palm: ChainId.PALM,
-  polygon: ChainId.POLYGON,
-  "polygon-zkevm": ChainId.POLYGON_ZKEVM,
-  telos: ChainId.TELOS,
-  thundercore: ChainId.THUNDERCORE,
-  xdai: ChainId.GNOSIS,
-  "zksync-era": 324,
-  scroll: 534352,
-  filecoin: 314, // ChainId.FILECOIN
-  zetachain: 7000, // ChainId.ZETACHAIN
-  blast: 81457, // ChainId.BLAST
-  "skale-europa": 2046399126, // ChainId.SKALE_EUROPA
-  rootstock: 30, // ChainId.ROOTSTOCK
-  cronos: 25 // ChainId.CRONOS
+const NETWORK_TO_CHAIN_ID: Record<
+  string,
+  | ChainId
+  | 8453
+  | 1116
+  | 11235
+  | 59144
+  | 324
+  | 534352
+  | 314
+  | 7000
+  | 81457
+  | 2046399126
+  | 30
+  | 25
+  | 11155111
+  | 421614
+  | 98866
+  | 98867
+> = {
+  // sepolia: 11155111,
+  // arbitrum: ChainId.ARBITRUM,
+  "plume-mainnet": 98866,
 };
 
 syncCDN();
@@ -77,19 +59,19 @@ async function syncLogosForNetwork(
 ) {
   console.log("Syncing chainId", chainId);
   for (const file of files) {
-    let cdnFileResponse: Response;
-    try {
-      cdnFileResponse = await fetch(`${BASE_DIR}/tokens/${chainId}/${file}`);
-    } catch (e) {
-      console.log(
-        "Error fetching logo",
-        `${BASE_DIR}/tokens/${chainId}/${file}`,
-        e
-      );
-      return;
-    }
+    // let cdnFileResponse: Response;
+    // try {
+    //   cdnFileResponse = await fetch(`${BASE_DIR}/tokens/${chainId}/${file}`);
+    // } catch (e) {
+    //   console.log(
+    //     "Error fetching logo",
+    //     `${BASE_DIR}/tokens/${chainId}/${file}`,
+    //     e
+    //   );
+    //   return;
+    // }
 
-    if (cdnFileResponse.status !== 200) {
+
       try {
         const uploadedFile = await cloudinary.v2.uploader.upload(
           path.join(dir, file),
@@ -103,6 +85,6 @@ async function syncLogosForNetwork(
       } catch (e) {
         console.log("Error uploading file", chainId, file, e);
       }
-    }
+    
   }
 }
